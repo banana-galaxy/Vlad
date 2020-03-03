@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 
 
 BLACK = (0, 0, 0)
@@ -10,11 +10,21 @@ NUMBER_COLOR = (128, 125, 122)
 BACKGROUND = (38, 37, 36)
 HIGHLIGHT = (75, 75, 75)
 HIGHLIGHT_DARK = (50, 50, 50)
+RED_SQUARE = (209, 25, 25)
+BLUE_SQUARE = (25, 135, 209)
+GOLD_SQUARE = (255, 196, 0)
+GREEN_SQUARE = (20, 150, 18)
+square_list = [RED_SQUARE, BLUE_SQUARE, GOLD_SQUARE, GREEN_SQUARE]
+square_color = random.choice(square_list)
+random_RGB = []
+for i in range(3):
+    color = random.randint(0, 255)
+    random_RGB.append(color)
 
 
 pygame.init()
 
-grid_size = 14
+grid_size = 13
 cell_size = 100
 screen_size = (cell_size*(grid_size-1), cell_size*(grid_size-1))
 
@@ -37,19 +47,25 @@ while not done:
             done = True
             reopen = True
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
+            pass
+            '''if event.key == pygame.K_UP:
                 grid_size += 1
                 screen_size = (cell_size*(grid_size-1), cell_size*(grid_size-1))
                 screen = pygame.display.set_mode(screen_size)
+            elif event.key == pygame.K_DOWN:
+                if grid_size > 14:
+                    grid_size -= 1
+                    screen_size = (cell_size*(grid_size-1), cell_size*(grid_size-1))
+                    screen = pygame.display.set_mode(screen_size)'''
 
 
     # --- Game logic should go here
     mouse = pygame.mouse.get_pos()
-    if pre_mouse != mouse:
+    '''if pre_mouse != mouse:
         grid_size = 14
         screen_size = (cell_size*(grid_size-1), cell_size*(grid_size-1))
         screen = pygame.display.set_mode(screen_size)
-        pre_mouse = mouse
+        pre_mouse = mouse'''
 
     square_position = int(mouse[0]/cell_size), int(mouse[1]/cell_size)
 
@@ -77,7 +93,7 @@ while not done:
 
     # number drawing
 
-    for x in range(1, grid_size):
+    for x in range(2, grid_size+1):
         # Select the font to use, size, bold, italics
         font = pygame.font.SysFont('Calibri', 100, False, False)
         
@@ -86,11 +102,11 @@ while not done:
         
         # Put the image of the text on the screen at 250x250
         if x >= 10:
-            screen.blit(text, [x*cell_size+10, 10]) 
+            screen.blit(text, [(x-1)*cell_size+10, 10]) 
         else:
-            screen.blit(text, [x*cell_size+30, 10])
+            screen.blit(text, [(x-1)*cell_size+30, 10])
     
-    for y in range(1, grid_size):
+    for y in range(2, grid_size+1):
         # Select the font to use, size, bold, italics
         font = pygame.font.SysFont('Calibri', 100, False, False)
         
@@ -99,12 +115,12 @@ while not done:
         
         # Put the image of the text on the screen at 250x250
         if y >= 10:
-            screen.blit(text, [10, y*cell_size+10]) 
+            screen.blit(text, [10, (y-1)*cell_size+10]) 
         else:
-            screen.blit(text, [30, y*cell_size+10])
+            screen.blit(text, [30, (y-1)*cell_size+10])
 
-    for y in range(1, grid_size):
-        for x in range(1, grid_size):
+    for y in range(2, grid_size+1):
+        for x in range(2, grid_size+1):
             number = str(x*y)
             # Select the font to use, size, bold, italics
             if int(number) >= 100:
@@ -115,13 +131,16 @@ while not done:
                 font = pygame.font.SysFont('Calibri', 100, False, False)
             
             # text, anti-aliased, color
-            text = font.render(number,True,NUMBER_COLOR)
+            if x == y:
+                text = font.render(number,True,square_color)
+            else:
+                text = font.render(number,True,NUMBER_COLOR)
             
             # Put the image of the text on the screen at 250x250
             if int(number) >= 10:
-                screen.blit(text, [x*cell_size+10, y*cell_size+10]) 
+                screen.blit(text, [(x-1)*cell_size+10, (y-1)*cell_size+10]) 
             else:
-                screen.blit(text, [x*cell_size+30, y*cell_size+10])
+                screen.blit(text, [(x-1)*cell_size+30, (y-1)*cell_size+10])
 
 
 
