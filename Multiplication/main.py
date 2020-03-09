@@ -120,8 +120,6 @@ while not done:
     scroll_up = False
     scroll_down = False
 
-    print(square_position, first, second)
-
     # --- Screen-clearing code goes here
 
     # Here, we clear the screen to white. Don't put other drawing commands
